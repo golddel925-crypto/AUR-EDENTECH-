@@ -8,15 +8,13 @@ export async function loginWithSequence(sequence: string) {
   }
 
   const { data, error } = await supabase.rpc("verify_sequence_login", {
-    input_code:Sequence
+    input_code: cleanSequence
   });
 
   if (error) {
     console.error("RPC ERROR:", error);
-    throw new Error("Errore server");
+    throw new Error(error.message);
   }
-
-  console.log("RPC RESULT:", data);
 
   const result = Array.isArray(data) ? data[0] : data;
 
@@ -25,6 +23,7 @@ export async function loginWithSequence(sequence: string) {
   }
 
   localStorage.setItem("aur_sequence_id", result.sequence_id);
+  localStorage.setItem("aur_logged", "true");
 
   return result;
-}
+} 

@@ -1,18 +1,39 @@
 import { useState } from "react";
 import { loginWithSequence } from "../services/auth";
+import { supabase } from "../lib/supabase";
 
 export default function Login() {
   const [sequence, setSequence] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   async function handleLogin() {
+    if (!sequence.trim()) {
+      setError("Inserisci una sequenza");
+      return;
+    }
+
     setError("");
+    setLoading(true);
 
     try {
+      // TEMP DEBUG: direct RPC call to verify connection and see raw response
+      try {
+        const { data: rpcData, error: rpcError } = await supabase.rpc(
+          "verify_sequence_login",
+          { input_code: sequence }
+        );
+        console.log("RPC RESULT", rpcData, rpcError);
+      } catch (e) {
+        console.error("RPC direct call failed", e);
+      }
+
       await loginWithSequence(sequence);
-      window.location.href = "/totalita";
+      window.location.href = "/dashboard";
     } catch (err: any) {
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -34,20 +55,20 @@ export default function Login() {
             onKeyPress={(e) => e.key === "Enter" && handleLogin()}
             placeholder="Sequence ID"
             className="w-full p-3 rounded bg-white/10 text-white placeholder-white/50 border border-yellow-400/30 focus:border-yellow-400 outline-none transition"
+            disabled={loading}
           />
 
           <button
             onClick={handleLogin}
-            className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 rounded transition"
+            disabled={loading}
+            className="w-full bg-yellow-400 hover:bg-yellow-500 disabled:bg-yellow-400/50 text-black font-bold py-3 rounded transition"
           >
-            Accedi
+            {loading ? "Verificando..." : "Accedi"}
           </button>
         </div>
 
         {error && (
-          <div className="p-3 rounded bg-red-500/20 border border-red-500/50 text-red-300 text-sm text-center">
-            {error}
-          </div>
+          <div className="text-red-400 text-center text-sm">{error}</div>
         )}
 
         <p className="text-xs text-white/40 text-center">
@@ -56,4 +77,4 @@ export default function Login() {
       </div>
     </div>
   );
-}
+} 

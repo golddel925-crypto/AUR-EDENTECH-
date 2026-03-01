@@ -6,6 +6,7 @@ import { Glow } from '../../components/ui/Glow'
 import { BadgeCard } from './BadgeCard'
 import { rpcFunctions } from '../../core/rpc'
 import { useSessionStore } from '../../stores/sessionStore'
+import { PageHeader } from '../../components/ui/PageHeader'
 
 interface BadgesPageProps {
   minimal?: boolean
@@ -83,10 +84,10 @@ export const BadgesPage: React.FC<BadgesPageProps> = ({ minimal = false }) => {
         className="space-y-8"
       >
         {/* Header */}
-        <div>
-          <h1 className="text-4xl font-bold mb-2 text-white">PREMI</h1>
-          <p className="text-white/50">Dimostra il tuo impatto e la tua evoluzione nella comunità</p>
-        </div>
+        <PageHeader
+          title="PREMI"
+          subtitle="Dimostra il tuo impatto e la tua evoluzione nella comunità"
+        />
 
         {/* Stats */}
         {userBadges.length > 0 && (

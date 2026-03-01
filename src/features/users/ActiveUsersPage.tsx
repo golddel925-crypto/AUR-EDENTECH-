@@ -1,6 +1,7 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { ActiveUsers } from './ActiveUsers'
+import { PageHeader } from '../../components/ui/PageHeader'
 
 export const ActiveUsersPage: React.FC = () => {
   return (
@@ -10,13 +11,11 @@ export const ActiveUsersPage: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         className="space-y-8"
       >
-        {/* Header */}
-        <div>
-          <h1 className="text-4xl font-bold mb-2 text-white">UTENTI ATTIVI</h1>
-          <p className="text-white/50">Comunità online in questo momento</p>
-        </div>
+        <PageHeader
+          title="UTENTI ATTIVI"
+          subtitle="Comunità online in questo momento"
+        />
 
-        {/* Users List */}
         <ActiveUsers />
       </motion.div>
     </div>

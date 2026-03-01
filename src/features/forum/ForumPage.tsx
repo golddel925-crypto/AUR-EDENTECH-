@@ -6,6 +6,7 @@ import { CreatePost } from './CreatePost'
 import { PostCard } from './PostCard'
 import { rpcFunctions } from '../../core/rpc'
 import { Button } from '../../components/ui/Button'
+import { PageHeader } from '../../components/ui/PageHeader'
 
 interface ForumPageProps {
   minimal?: boolean
@@ -65,10 +66,7 @@ export const ForumPage: React.FC<ForumPageProps> = ({ minimal = false }) => {
         className="space-y-6"
       >
         {/* Header */}
-        <div>
-          <h1 className="text-4xl font-bold mb-2">FORUM</h1>
-          <p className="text-white/50">Condividi riflessioni e intenzioni</p>
-        </div>
+        <PageHeader title="FORUM" subtitle="Condividi riflessioni e intenzioni" />
 
         {/* Create Post Section */}
         <CreatePost onPostCreated={() => refetch()} />

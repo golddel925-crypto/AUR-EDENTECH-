@@ -2,6 +2,7 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import { useQuery } from '@tanstack/react-query'
 import { Card } from '../../components/ui/Card'
+import { DataGrid } from '../../components/ui/DataGrid'
 import * as rpcFunctions from '../../core/rpc'
 
 export const ActiveUsers: React.FC = () => {
@@ -39,7 +40,7 @@ export const ActiveUsers: React.FC = () => {
   return (
     <div className="space-y-4">
       {userList.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <DataGrid cols={1} gap="gap-3" className="sm:grid-cols-2">
           {userList.map((user: any, idx: number) => (
             <motion.div
               key={user.id}
@@ -67,7 +68,7 @@ export const ActiveUsers: React.FC = () => {
               </Card>
             </motion.div>
           ))}
-        </div>
+        </DataGrid>
       ) : (
         <Card>
           <p className="text-white/50 text-center py-8">Nessun utente attivo</p>

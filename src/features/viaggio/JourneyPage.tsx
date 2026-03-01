@@ -5,6 +5,7 @@ import { Card } from '../../components/ui/Card'
 import { Glow } from '../../components/ui/Glow'
 import { JourneyStep } from './JourneyStep'
 import { rpcFunctions } from '../../core/rpc'
+import { PageHeader } from '../../components/ui/PageHeader'
 
 export const JourneyPage: React.FC = () => {
   const { data: steps, isLoading } = useQuery({
@@ -48,10 +49,10 @@ export const JourneyPage: React.FC = () => {
         className="space-y-8"
       >
         {/* Header */}
-        <div>
-          <h1 className="text-4xl font-bold mb-2 text-white">VIAGGIO</h1>
-          <p className="text-white/50">Il tuo percorso di evoluzione personale</p>
-        </div>
+        <PageHeader
+          title="VIAGGIO"
+          subtitle="Il tuo percorso di evoluzione personale"
+        />
 
         {/* Timeline Container */}
         <div className="relative">

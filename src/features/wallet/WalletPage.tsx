@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { Card } from '../../components/ui/Card'
 import { Button } from '../../components/ui/Button'
 import { Glow } from '../../components/ui/Glow'
+import { PageHeader } from '../../components/ui/PageHeader'
 import { useWallet } from '../../hooks/useWallet'
 
 export const WalletPage: React.FC = () => {
@@ -40,10 +41,10 @@ export const WalletPage: React.FC = () => {
         className="space-y-8"
       >
         {/* Header */}
-        <div>
-          <h1 className="text-4xl font-bold mb-2 text-white">WALLET</h1>
-          <p className="text-white/50">Gestisci il tuo portafoglio Web3 e i tuoi asset</p>
-        </div>
+        <PageHeader
+          title="WALLET"
+          subtitle="Gestisci il tuo portafoglio Web3 e i tuoi asset"
+        />
 
         {/* Main Card */}
         {isConnected && address ? (

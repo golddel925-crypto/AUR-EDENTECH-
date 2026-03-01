@@ -1,10 +1,9 @@
-import { Navigate } from "react-router-dom";
-
 export default function AuthGuard({ children }: any) {
-  const seq = localStorage.getItem("aur_sequence_id");
+  const logged = localStorage.getItem("aur_logged");
 
-  if (!seq) {
-    return <Navigate to="/" />;
+  if (!logged) {
+    window.location.href = "/";
+    return null;
   }
 
   return children;

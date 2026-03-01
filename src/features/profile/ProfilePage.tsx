@@ -5,6 +5,7 @@ import { Card } from '../../components/ui/Card'
 import { Input } from '../../components/ui/Input'
 import { Button } from '../../components/ui/Button'
 import { Glow } from '../../components/ui/Glow'
+import { PageHeader } from '../../components/ui/PageHeader'
 import { useUser } from '../../hooks/useUser'
 import { useSessionStore } from '../../stores/sessionStore'
 import { rpcFunctions } from '../../core/rpc'
@@ -75,10 +76,7 @@ export const ProfilePage: React.FC = () => {
         className="space-y-8"
       >
         {/* Header */}
-        <div>
-          <h1 className="text-4xl font-bold mb-2 text-white">PROFILO</h1>
-          <p className="text-white/50">Gestisci la tua identità digitale</p>
-        </div>
+        <PageHeader title="PROFILO" subtitle="Gestisci la tua identità digitale" />
 
         {/* Tabs */}
         <div className="flex gap-1 border-b border-emerald-500/30">
