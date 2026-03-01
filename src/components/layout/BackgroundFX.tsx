@@ -163,15 +163,15 @@ export const BackgroundFX: React.FC = () => {
         <motion.div
           key={i}
           className="absolute w-2 h-2 rounded-full bg-emerald"
-          style={{ left: node.x, top: node.y, zIndex: -40, opacity: 0.8 }}
-          animate={{
+          style={( { left: node.x, top: node.y, zIndex: -40, opacity: 0.8 } as any )}
+          animate={( {
             boxShadow: [
               '0 0 8px rgba(80, 200, 120, 0.25)',
               '0 0 20px rgba(80, 200, 120, 0.6)',
               '0 0 8px rgba(80, 200, 120, 0.25)',
             ],
             transform: ['translateY(0px)', 'translateY(-6px)', 'translateY(0px)'],
-          }}
+          } as any )}
           transition={{ duration: 10, repeat: Infinity, delay: node.delay, ease: 'easeInOut' }}
         />
       ))}
@@ -185,7 +185,7 @@ export const BackgroundFX: React.FC = () => {
         <motion.div
           key={idx}
           className={`absolute w-1.5 h-1.5 rounded-full`}
-          style={{ left: p.startX, top: p.startY, zIndex: -50, background: idx===0? '#3A86FF': idx===1? '#8338EC':'#FF006E', opacity: 0.12 }}
+          style={( { left: p.startX, top: p.startY, zIndex: -50, background: idx===0? '#3A86FF': idx===1? '#8338EC':'#FF006E', opacity: 0.12 } as any )}
           animate={{
             x: p.dx,
             y: p.dy,

@@ -59,13 +59,13 @@ export const JourneyPage: React.FC = () => {
           {/* Animated Vertical Glow Line */}
           <motion.div
             className="absolute left-0 sm:left-8 top-0 bottom-0 w-1 bg-gradient-to-b from-emerald-500 via-yellow-400 to-emerald-500 rounded-full"
-            animate={{
+            animate={( {
               boxShadow: [
                 '0 0 12px rgba(80, 200, 120, 0.4)',
                 '0 0 24px rgba(80, 200, 120, 0.8)',
                 '0 0 12px rgba(80, 200, 120, 0.4)',
               ],
-            }}
+            } as any )}
             transition={{ duration: 3, repeat: Infinity }}
           />
 
@@ -84,13 +84,13 @@ export const JourneyPage: React.FC = () => {
                   <motion.div
                     className="absolute -left-5 sm:-left-14 top-6 w-4 h-4 rounded-full bg-emerald-500 border-2 border-black"
                     whileHover={{ scale: 1.3 }}
-                    animate={{
+                    animate={( {
                       boxShadow: [
                         '0 0 8px rgba(80, 200, 120, 0.5)',
                         '0 0 16px rgba(80, 200, 120, 0.9)',
                         '0 0 8px rgba(80, 200, 120, 0.5)',
                       ],
-                    }}
+                    } as any )}
                     transition={{ duration: 2, repeat: Infinity, delay: index * 0.2 }}
                   />
 

@@ -142,10 +142,7 @@ export const PostCard: React.FC<PostCardProps> = ({ post, minimal = false }) => 
             disabled={loading === 'risuona'}
             className="flex-1 py-2 px-4 border border-emerald/30 text-emerald hover:border-emerald transition-all rounded-lg disabled:opacity-50"
             whileHover={{ scale: 1.02 }}
-            whileTap={{
-              scale: 0.96,
-              boxShadow: '0 0 8px rgba(80,200,120,0.9)',
-            }}
+            whileTap={( { scale: 0.96, boxShadow: '0 0 8px rgba(80,200,120,0.9)' } as any )}
           >
             {loading === 'presente' ? '⟳' : '✓'} Presente ({presenteCount})
           </motion.button>
@@ -155,10 +152,7 @@ export const PostCard: React.FC<PostCardProps> = ({ post, minimal = false }) => 
             disabled={loading === 'presente'}
             className="flex-1 py-2 px-4 border border-gold/30 text-gold hover:border-gold transition-all rounded-lg disabled:opacity-50"
             whileHover={{ scale: 1.02 }}
-            whileTap={{
-              scale: 0.96,
-              boxShadow: '0 0 8px rgba(255,215,0,0.9)',
-            }}
+            whileTap={( { scale: 0.96, boxShadow: '0 0 8px rgba(255,215,0,0.9)' } as any )}
           >
             {loading === 'risuona' ? '⟳' : '◊'} Risuona ({risuonaCount})
           </motion.button>

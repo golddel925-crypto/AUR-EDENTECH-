@@ -46,9 +46,7 @@ export const TopNav: React.FC = () => {
           <Link to="/dashboard" className="flex-shrink-0">
             <motion.div
               className="text-xl font-bold text-yellow-400 tracking-widest"
-              whileHover={{
-                textShadow: '0 0 8px rgba(80, 200, 120, 0.8)',
-              }}
+              whileHover={( { textShadow: '0 0 8px rgba(80, 200, 120, 0.8)' } as any )}
               transition={{ duration: 0.2 }}
             >
               AUR EDENTECH
@@ -65,9 +63,7 @@ export const TopNav: React.FC = () => {
                         ? 'text-yellow-400'
                         : 'text-white/70 hover:text-white'
                     }`}
-                    whileHover={{
-                      textShadow: '0 0 10px rgba(80, 200, 120, 0.6)',
-                    }}
+                    whileHover={( { textShadow: '0 0 10px rgba(80, 200, 120, 0.6)' } as any )}
                   >
                     {item.label}
                     {/* animated underline for active tab */}
@@ -109,9 +105,7 @@ export const TopNav: React.FC = () => {
                     ? 'text-yellow-400'
                     : 'text-white/70 hover:text-emerald-500'
                 }`}
-                whileHover={{
-                  paddingLeft: 8,
-                }}
+                whileHover={( { paddingLeft: 8 } as any)}
               >
                 {item.label}
               </motion.div>

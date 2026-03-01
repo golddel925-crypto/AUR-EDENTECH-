@@ -1,8 +1,7 @@
 import React, { lazy, Suspense, useEffect } from "react";
 import { createBrowserRouter, Outlet, useNavigate, Navigate } from "react-router-dom";
 import { LoadingState } from "../components/ui/LoadingState";
-import { AuthGate } from "../components/layout/AuthGate";
-import { PlatformLayout } from "../components/layout/PlatformLayout";
+import { ProtectedLayout } from "../components/layout/ProtectedLayout";
 
 // lazy components for all pages/features
 const Login = lazy(() => import("../pages/Login"));
@@ -99,15 +98,11 @@ export const router = createBrowserRouter([
       { index: true, element: withSuspense(<Login />) },
       { path: "login", element: withSuspense(<Login />) },
 
-      // authenticated area guarded by AuthGate and using the
-      // PlatformLayout. children below are only rendered when a valid
-      // `sequence_id` exists in sessionStorage (AuthGate enforces this).
+      // authenticated area uses the single ProtectedLayout. that
+      // component already includes the AuthGate logic, so no additional
+      // wrappers are needed.
       {
-        element: (
-          <AuthGate>
-            <PlatformLayout />
-          </AuthGate>
-        ),
+        element: <ProtectedLayout />,
         children: [
           { path: "dashboard", element: withSuspense(<TotalitaPage />) },
           { path: "ecosystem", element: withSuspense(<EcosystemPage />) },

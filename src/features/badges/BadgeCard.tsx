@@ -35,10 +35,10 @@ export const BadgeCard: React.FC<BadgeCardProps> = ({
       whileHover={earned ? { scale: 1.06, rotateZ: 0.5 } : { scale: 1.02 }}
       className={`${minimal ? 'h-full' : 'h-36'}`}
     >
-      <div className="relative w-full h-full flex items-center justify-center" style={{ perspective: 800 }}>
+      <div className="relative w-full h-full flex items-center justify-center" style={( { perspective: 800 } as any)}>
         <motion.div
           className={`relative w-full h-full flex flex-col items-center justify-center ${!earned ? 'opacity-40' : ''}`}
-          style={{ transformStyle: 'preserve-3d' }}
+          style={( { transformStyle: 'preserve-3d' } as any)}
           animate={earned ? { rotateY: [0, 6, -4, 0], translateZ: [0, 6, 2, 0] } : {}}
           transition={{ duration: 1.4 }}
         >
@@ -79,12 +79,12 @@ export const BadgeCard: React.FC<BadgeCardProps> = ({
                 <motion.span
                   key={i}
                   className="absolute w-1.5 h-1.5 rounded-full bg-emerald"
-                  style={{
+                  style={( {
                     left: '50%',
                     top: '40%',
                     transform: 'translate(-50%, -50%)',
                     opacity: 0.9,
-                  }}
+                  } as any )}
                   initial={{ x: 0, y: 0, opacity: 0.9 }}
                   animate={{
                     x: (Math.cos((i / 8) * Math.PI * 2) * 48).toString() + 'px',

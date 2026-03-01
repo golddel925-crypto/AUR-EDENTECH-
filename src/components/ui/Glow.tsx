@@ -31,13 +31,13 @@ export const Glow: React.FC<GlowProps> = ({
   return (
     <motion.div
       className={`relative ${className}`}
-      animate={{
+      animate={( {
         boxShadow: [
           `0 8px 24px -8px ${colorMap[color]}`,
           `0 16px 48px -20px ${colorMap[color]}`,
           `0 8px 24px -8px ${colorMap[color]}`,
         ],
-      }}
+      } as any )}
       transition={{
         duration: 2,
         repeat: Infinity,
