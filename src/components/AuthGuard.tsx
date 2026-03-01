@@ -1,24 +1,11 @@
-import React from 'react'
-import { useSessionStore } from '../stores/sessionStore'
-import { Navigate } from 'react-router-dom'
+import { Navigate } from "react-router-dom";
 
-interface Props {
-  children: React.ReactNode
-}
+export default function AuthGuard({ children }: any) {
+  const seq = localStorage.getItem("aur_sequence_id");
 
-export const AuthGuard: React.FC<Props> = ({ children }) => {
-  // Temporary bypass for debugging — set to `false` to re-enable guard
-  const BYPASS_AUTH = true
-
-  if (BYPASS_AUTH) return <>{children}</>
-
-  const { isAuthenticated, hydrated } = useSessionStore()
-
-  if (!hydrated) return null
-
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />
+  if (!seq) {
+    return <Navigate to="/" />;
   }
 
-  return <>{children}</>
+  return children;
 }
