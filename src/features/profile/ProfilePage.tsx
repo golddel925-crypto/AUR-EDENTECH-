@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useQuery } from '@tanstack/react-query'
 import { Card } from '../../components/ui/Card'
@@ -20,6 +20,11 @@ export const ProfilePage: React.FC = () => {
   const { userId } = useSessionStore()
   const { addNotification } = useUIStore()
   const [activeTab, setActiveTab] = useState<TabType>('identity')
+  const [bio, setBio] = useState(profile?.bio || '')
+
+  useEffect(() => {
+    if (profile?.bio !== undefined) setBio(profile.bio || '')
+  }, [profile?.bio])
 
   // Fetch badges for evolution tab
   const { data: badges = [] } = useQuery({
@@ -147,7 +152,7 @@ export const ProfilePage: React.FC = () => {
                 <Card>
                   <div className="text-center">
                     <p className="text-yellow-400 text-3xl font-bold">{profile?.coinBalance || 0}</p>
-                    <p className="text-white/50 text-xs mt-2">COIN CANCELLIERI</p>
+                    <p className="text-white/50 text-xs mt-2">CANCELLIERE</p>
                   </div>
                 </Card>
                 <Card>
@@ -259,7 +264,8 @@ export const ProfilePage: React.FC = () => {
                 <textarea
                   placeholder="Racconta qualcosa su di te..."
                   maxLength={300}
-                  defaultValue=""
+                  value={bio}
+                  onChange={(e) => setBio(e.target.value)}
                   className="w-full h-24 bg-black/50 border border-emerald-500/30 text-white placeholder-white/50 px-4 py-3 rounded-lg focus:border-emerald-500 focus:outline-none transition-all"
                 />
                 <p className="text-white/50 text-xs mt-2">Max 300 caratteri</p>
@@ -317,8 +323,10 @@ export const ProfilePage: React.FC = () => {
               >
                 <Button
                   fullWidth
-                  onClick={() => {
-                    addNotification('Impostazioni salvate!', 'success')
+                  onClick={async () => {
+                    const success = await rpcFunctions.updateProfile({ bio })
+                    if (success) addNotification('Impostazioni salvate!', 'success')
+                    else addNotification('Errore durante il salvataggio', 'error')
                   }}
                   className="bg-emerald-500 hover:bg-emerald-600 text-black font-bold py-3"
                 >

@@ -154,6 +154,26 @@ export async function interactPost(
 }
 
 /**
+ * Update the authenticated user's profile
+ */
+export async function updateProfile(updates: Record<string, any>): Promise<boolean> {
+  const { userId } = useSessionStore.getState()
+  if (!userId) throw new Error('User not authenticated')
+
+  try {
+    const { error } = await supabase
+      .from('profiles')
+      .update(updates)
+      .eq('id', userId)
+    if (error) throw error
+    return true
+  } catch (err) {
+    console.error('Failed to update profile:', err)
+    return false
+  }
+}
+
+/**
  * Fetch user profile (creates if doesn't exist)
  */
 export async function fetchProfile(userId: string): Promise<any> {
@@ -343,6 +363,130 @@ export async function fetchWalletInfo(userId: string): Promise<any> {
 }
 
 /**
+ * Fetch spaces - generic list (may require backend table)
+ */
+export async function fetchSpaces(userId?: string): Promise<any[]> {
+  try {
+    // prefer RPC if available
+    try {
+      const data: any = await rpc('get_spaces', { p_user_id: userId })
+      if (Array.isArray(data)) return data
+    } catch (err) {
+      // ignore, will fallback to table query
+    }
+
+    const query = supabase.from('spaces').select('*')
+    if (userId) {
+      query.eq('owner_id', userId)
+    }
+    const { data, error } = await query
+    if (error) throw error
+    return data || []
+  } catch (error) {
+    console.error('Failed to fetch spaces:', error)
+    return []
+  }
+}
+
+/**
+ * Fetch projects - generic list
+ */
+export async function fetchProjects(spaceId?: string): Promise<any[]> {
+  try {
+    try {
+      const data: any = await rpc('get_projects', { p_space_id: spaceId })
+      if (Array.isArray(data)) return data
+    } catch (err) {}
+
+    const query = supabase.from('projects').select('*')
+    if (spaceId) {
+      query.eq('space_id', spaceId)
+    }
+    const { data, error } = await query
+    if (error) throw error
+    return data || []
+  } catch (error) {
+    console.error('Failed to fetch projects:', error)
+    return []
+  }
+}
+
+/**
+ * Fetch network connections - simple representation
+ */
+export async function fetchNetwork(userId?: string): Promise<any[]> {
+  try {
+    try {
+      const data: any = await rpc('get_network', { p_user_id: userId })
+      if (Array.isArray(data)) return data
+    } catch (err) {}
+
+    const query = supabase.from('connections').select('*')
+    if (userId) {
+      query.or(`user_id.eq.${userId},peer_id.eq.${userId}`)
+    }
+    const { data, error } = await query
+    if (error) throw error
+    return data || []
+  } catch (error) {
+    console.error('Failed to fetch network data:', error)
+    return []
+  }
+}
+
+/**
+ * Fetch recent activity (timeline) for user or global
+ */
+export async function fetchActivity(limit = 50, offset = 0): Promise<any[]> {
+  try {
+    try {
+      const data: any = await rpc('get_activity', { p_limit: limit, p_offset: offset })
+      if (Array.isArray(data)) return data
+    } catch (err) {}
+
+    const { data, error } = await supabase
+      .from('activity')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .range(offset, offset + limit - 1)
+    if (error) throw error
+    return data || []
+  } catch (error) {
+    console.error('Failed to fetch activity:', error)
+    return []
+  }
+}
+
+/**
+ * Fetch messages for a conversation or user
+ */
+export async function fetchMessages(conversationId?: string, userId?: string): Promise<any[]> {
+  try {
+    try {
+      const data: any = await rpc('get_messages', {
+        p_conversation_id: conversationId,
+        p_user_id: userId,
+      })
+      if (Array.isArray(data)) return data
+    } catch (err) {}
+
+    let query = supabase.from('messages').select('*')
+    if (conversationId) {
+      query = query.eq('conversation_id', conversationId)
+    }
+    if (userId) {
+      query = query.or(`sender_id.eq.${userId},receiver_id.eq.${userId}`)
+    }
+    const { data, error } = await query.order('created_at', { ascending: true })
+    if (error) throw error
+    return data || []
+  } catch (error) {
+    console.error('Failed to fetch messages:', error)
+    return []
+  }
+}
+
+/**
  * Unsubscribe helper for compatibility
  */
 export async function unsubscribeAll() {
@@ -371,6 +515,13 @@ export const rpcFunctions = {
   fetchActiveUsers,
   updateWallet,
   fetchWalletInfo,
+  // new modules
+  fetchSpaces,
+  fetchProjects,
+  fetchNetwork,
+  fetchActivity,
+  fetchMessages,
+  updateProfile,
   unsubscribeAll,
 }
 

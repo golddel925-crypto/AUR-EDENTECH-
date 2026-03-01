@@ -39,7 +39,7 @@ export const Button: React.FC<ButtonProps> = ({
   return (
     <motion.button
       whileHover={{ scale: disabled ? 1 : 1.02 }}
-      whileTap={{ scale: disabled ? 1 : 0.98 }}
+      whileTap={{ scale: disabled ? 1 : 0.96 }}
       onClick={onClick}
       type={type}
       disabled={disabled || loading}

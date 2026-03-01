@@ -1,33 +1,38 @@
+import React from 'react'
 import { create } from 'zustand'
 
 interface UIState {
-  sidebarOpen: boolean
   theme: 'dark' | 'light'
+  sidebarOpen: boolean
   notifications: Array<{
     id: string
     message: string
     type: 'success' | 'error' | 'info' | 'warning'
   }>
-  toggleSidebar: () => void
   setTheme: (theme: 'dark' | 'light') => void
+  toggleSidebar: () => void
+  openSidebar: () => void
+  closeSidebar: () => void
   addNotification: (
     message: string,
     type: 'success' | 'error' | 'info' | 'warning'
   ) => void
   removeNotification: (id: string) => void
   clearNotifications: () => void
+  // modal helpers
+  modalContent: React.ReactNode | null
+  showModal: (content: React.ReactNode) => void
+  hideModal: () => void
 }
 
 export const useUIStore = create<UIState>((set) => ({
-  sidebarOpen:
-    typeof window !== 'undefined' && window.innerWidth >= 1024 ? true : false,
   theme: 'dark',
+  sidebarOpen: true,
   notifications: [],
-  toggleSidebar: () =>
-    set((state) => ({
-      sidebarOpen: !state.sidebarOpen,
-    })),
   setTheme: (theme) => set({ theme }),
+  toggleSidebar: () => set((state) => ({ sidebarOpen: !state.sidebarOpen })),
+  openSidebar: () => set({ sidebarOpen: true }),
+  closeSidebar: () => set({ sidebarOpen: false }),
   addNotification: (message, type) =>
     set((state) => ({
       notifications: [
@@ -44,4 +49,8 @@ export const useUIStore = create<UIState>((set) => ({
       notifications: state.notifications.filter((n) => n.id !== id),
     })),
   clearNotifications: () => set({ notifications: [] }),
+  // modal state
+  modalContent: null,
+  showModal: (content) => set({ modalContent: content }),
+  hideModal: () => set({ modalContent: null }),
 }))

@@ -22,8 +22,8 @@ export async function loginWithSequence(sequence: string) {
     throw new Error("Sequenza non valida");
   }
 
-  localStorage.setItem("aur_sequence_id", result.sequence_id);
-  localStorage.setItem("aur_logged", "true");
+  // record sequence ID in sessionStorage only (frontend auth source of truth)
+  sessionStorage.setItem("sequence_id", result.sequence_id);
 
   return result;
 } 

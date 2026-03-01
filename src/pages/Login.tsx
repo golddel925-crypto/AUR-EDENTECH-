@@ -1,11 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { loginWithSequence } from "../services/auth";
-import { supabase } from "../lib/supabase";
+import { useSessionStore } from "../stores/sessionStore";
 
 export default function Login() {
   const [sequence, setSequence] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { setSession } = useSessionStore();
+
+  // if already have a session, bounce to dashboard immediately
+  useEffect(() => {
+    if (sessionStorage.getItem("sequence_id")) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, [navigate]);
 
   async function handleLogin() {
     if (!sequence.trim()) {
@@ -17,19 +27,12 @@ export default function Login() {
     setLoading(true);
 
     try {
-      // TEMP DEBUG: direct RPC call to verify connection and see raw response
-      try {
-        const { data: rpcData, error: rpcError } = await supabase.rpc(
-          "verify_sequence_login",
-          { input_code: sequence }
-        );
-        console.log("RPC RESULT", rpcData, rpcError);
-      } catch (e) {
-        console.error("RPC direct call failed", e);
-      }
-
-      await loginWithSequence(sequence);
-      window.location.href = "/dashboard";
+      const result = await loginWithSequence(sequence);
+      const sid = result.sequence_id;
+      // store in session storage and update the global store
+      sessionStorage.setItem("sequence_id", sid);
+      setSession(sid, sid);
+      navigate("/dashboard", { replace: true });
     } catch (err: any) {
       setError(err.message);
     } finally {

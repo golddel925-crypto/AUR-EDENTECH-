@@ -3,6 +3,15 @@
   --color-black: #000000;
   --color-gold: #FFD700;
   --color-emerald: #50C878;
+  --color-blue-energy: #3A86FF;
+  --color-purple-network: #8338EC;
+  --color-magenta-impulse: #FF006E;
+  --glass-alpha: 0.42;
+  --card-border: 1px;
+  --card-radius: 12px;
+  --glow-emerald: rgba(80,200,120,0.35);
+  --glow-gold: rgba(255,215,0,0.28);
+  --glow-energy: rgba(58,134,255,0.22);
   --duration-short: 200ms;
   --duration-medium: 300ms;
 }
@@ -117,11 +126,11 @@ body {
 
 /* Glow effects */
 .glow-emerald {
-  animation: glow 2s ease-in-out infinite;
+  animation: glow 2.5s ease-in-out infinite;
 }
 
 .glow-gold {
-  animation: glowGold 2s ease-in-out infinite;
+  animation: glowGold 2.5s ease-in-out infinite;
 }
 
 /* Transitions */
@@ -139,7 +148,7 @@ body {
 
 /* Utilities */
 .text-gradient {
-  background: linear-gradient(135deg, #FFD700 0%, #50C878 100%);
+  background: linear-gradient(135deg, var(--color-gold) 0%, var(--color-emerald) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -197,4 +206,17 @@ button:focus-visible {
   html {
     scroll-behavior: smooth;
   }
+}
+
+/* Card material helpers */
+.card-deep {
+  background: rgba(0,0,0,0.75);
+  border: var(--card-border) solid rgba(255,215,0,0.12);
+  border-radius: var(--card-radius);
+  box-shadow: 0 8px 30px -10px var(--glow-emerald);
+}
+
+.glass-bar {
+  background: rgba(0,0,0,var(--glass-alpha));
+  backdrop-filter: blur(6px) saturate(120%);
 }

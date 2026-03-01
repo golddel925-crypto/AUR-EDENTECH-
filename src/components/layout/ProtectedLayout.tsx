@@ -1,44 +1,42 @@
 import React, { useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
-import AuthGuard from '../AuthGuard'
-import { Sidebar } from './Sidebar'
-import { Topbar } from './Topbar'
 import { BackgroundFX } from './BackgroundFX'
+import { Modal } from '../ui/Modal'
+import { Notifications } from '../ui/Notifications'
 import { useSessionStore } from '../../stores/sessionStore'
-import { useUIStore } from '../../stores/uiStore'
+import { TopNav } from './TopNav'
+import { AuthGate } from './AuthGate'
+
+// AuthGuard is a noop wrapper used by the layout specification. It does not
+// contain any logic but having it here keeps the structure aligned with the
+// requested markup. It may be extended later if needed.
+const AuthGuard: React.FC<React.PropsWithChildren<{}>> = ({ children }) => <>{children}</>;
 
 export const ProtectedLayout: React.FC = () => {
-  // hydrate session store from localStorage if available
+  // hydrate session store from sessionStorage if available (legacy layout)
   useEffect(() => {
-    const seq = localStorage.getItem('aur_sequence_id')
-    const logged = localStorage.getItem('aur_logged')
-    if (logged && seq) {
+    const seq = sessionStorage.getItem('sequence_id')
+    if (seq) {
       // use sequence as userId for now
       useSessionStore.getState().setSession(seq, seq)
     }
   }, [])
 
-  const { sidebarOpen, toggleSidebar } = useUIStore()
-
   return (
     <AuthGuard>
-      <BackgroundFX />
-      <div className="flex h-screen overflow-hidden">
-        <Sidebar />
-        {/* overlay for mobile when sidebar is open */}
-        {sidebarOpen && (
-          <div
-            className="fixed inset-0 bg-black/50 z-20 lg:hidden"
-            onClick={toggleSidebar}
-          />
-        )}
-        <div className="flex-1 flex flex-col lg:ml-64">
-          <Topbar />
-          <main className="flex-1 overflow-auto">
-            <Outlet />
+      <AuthGate>
+        <BackgroundFX />
+        <div className="min-h-screen flex flex-col">
+          <TopNav />
+          <main className="flex-1 flex justify-center pt-24 px-6 pb-16">
+            <div className="w-full max-w-[1400px]">
+              <Outlet />
+            </div>
           </main>
         </div>
-      </div>
+        <Modal />
+        <Notifications />
+      </AuthGate>
     </AuthGuard>
   )
 }

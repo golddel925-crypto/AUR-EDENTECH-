@@ -1,36 +1,75 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useUIStore } from '../../stores/uiStore'
+import { useNavigate, useLocation } from 'react-router-dom'
+// sidebar functionality removed; UI store import not needed
 import { useSessionStore } from '../../stores/sessionStore'
 import { useProfileStore } from '../../stores/profileStore'
 import { useWalletStore } from '../../stores/walletStore'
 
 export const Topbar: React.FC = () => {
-  const { toggleSidebar } = useUIStore()
-  const { sequenceId } = useSessionStore()
-  const { profile } = useProfileStore()
+  // sidebar toggling removed
+  const sequenceId = useSessionStore((state) => state.sequenceId)
+  const profile = useProfileStore((state) => state.profile)
   const navigate = useNavigate()
+  const location = useLocation()
+  
+  const pageTitle = React.useMemo(() => {
+    const path = location.pathname.split('/')[1]
+    switch (path) {
+      case 'dashboard':
+        return 'Dashboard'
+      case 'ecosystem':
+        return 'Ecosistema'
+      case 'spaces':
+        return 'Spazi'
+      case 'projects':
+        return 'Progetti'
+      case 'network':
+        return 'Rete'
+      case 'activity':
+        return 'Attività'
+      case 'messages':
+        return 'Messaggi'
+      case 'universe':
+        return 'Universo'
+      case 'forum':
+        return 'Forum'
+      case 'journey':
+        return 'Viaggio'
+      case 'wallet':
+        return 'Wallet'
+      case 'badges':
+        return 'Badges'
+      case 'users':
+        return 'Utenti'
+      case 'profile':
+        return 'Profilo'
+      default:
+        return ''
+    }
+  }, [location.pathname])
 
   const handleLogout = () => {
     useSessionStore.getState().clearSession()
     useProfileStore.getState().clearProfile()
     useWalletStore.getState().disconnect()
-    localStorage.removeItem('aur_sequence_id')
-    localStorage.removeItem('aur_logged')
-    navigate('/')
+    // wipe session storage and any lingering local keys
+    sessionStorage.clear()
+    localStorage.removeItem('aur_session')
+    localStorage.removeItem('sequence_id')
+    // redirect hard to login
+    window.location.href = '/login'
   }
 
   return (
     <div className="flex items-center justify-between bg-black/80 border-b border-emerald/20 h-16 px-4 lg:px-8">
       <div className="flex items-center gap-4">
-        <button
-          className="text-white text-2xl lg:hidden"
-          onClick={toggleSidebar}
-          aria-label="Toggle sidebar"
-        >
-          ☰
-        </button>
+        {/* sidebar toggle removed */}
         <span className="text-xs text-white/70">Seq: {sequenceId || '---'}</span>
+        {pageTitle && (
+          <span className="ml-4 text-sm font-semibold text-white/90">
+            {pageTitle}
+          </span>
+        )}
       </div>
 
       <div className="flex items-center gap-4">

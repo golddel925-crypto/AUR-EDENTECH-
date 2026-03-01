@@ -5,6 +5,7 @@ interface CardProps {
   children: React.ReactNode
   onClick?: () => void
   hoverable?: boolean
+  borderColor?: string
 }
 
 export const Card: React.FC<CardProps> = ({
@@ -12,13 +13,16 @@ export const Card: React.FC<CardProps> = ({
   children,
   onClick,
   hoverable = false,
+  borderColor,
 }) => {
   return (
     <div
       className={`
-        bg-black border border-emerald/20 rounded-lg p-6
-        transition-fast
-        ${hoverable ? 'hover:border-emerald/50 hover:shadow-lg hover:shadow-emerald/20' : ''}
+        bg-black
+        ${borderColor ? borderColor : 'border border-yellow-400'}
+        rounded-lg p-6
+        transition-fast transform
+        ${hoverable ? 'hover:shadow-lg hover:shadow-emerald/30 hover:-translate-y-1' : ''}
         ${onClick ? 'cursor-pointer' : ''}
         ${className}
       `}

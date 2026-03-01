@@ -8,6 +8,8 @@ import { PostCard } from '../forum/PostCard'
 import { useUser } from '../../hooks/useUser'
 import { rpcFunctions } from '../../core/rpc'
 import { useSessionStore } from '../../stores/sessionStore'
+import { useUIStore } from '../../stores/uiStore'
+import { useNavigate } from 'react-router-dom'
 
 const BADGE_CATEGORIES = [
   { id: 'evolution', label: 'Evoluzione', color: 'from-emerald' },
@@ -20,7 +22,9 @@ const BADGE_LEVELS = ['Bronze', 'Silver']
 
 export const TotalitaPage: React.FC = () => {
   const { profile, isLoading: profileLoading } = useUser()
+  const { addNotification } = useUIStore()
   const { userId } = useSessionStore()
+  const navigate = useNavigate()
 
   // Fetch posts for center column
   const { data: postsData = [], isLoading: postsLoading } = useQuery({
@@ -56,6 +60,18 @@ export const TotalitaPage: React.FC = () => {
 
   const isLoading = profileLoading || postsLoading || badgesLoading
 
+  // flash effect when user earns a badge in realtime
+  React.useEffect(() => {
+    const handler = (e: any) => {
+      const badge = e.detail
+      if (badge.user_id === userId) {
+        addNotification('Nuovo badge guadagnato!', 'success')
+      }
+    }
+    window.addEventListener('badge-earned', handler)
+    return () => window.removeEventListener('badge-earned', handler)
+  }, [userId])
+
   const containerVariants = {
     hidden: { opacity: 0 },
     show: {
@@ -90,18 +106,21 @@ export const TotalitaPage: React.FC = () => {
         {/* LEFT COLUMN - Profile */}
         <motion.div variants={itemVariants} className="lg:col-span-1">
           <Glow color="emerald" intensity="medium">
-            <Card className="h-full">
+            <Card className="h-full" borderColor="border-gold/30">
               <div className="text-center">
-                {/* Avatar - Large */}
+                {/* Avatar - Large (clickable) */}
                 <motion.div
-                  className="mb-6 flex justify-center"
+                  className="mb-6 flex justify-center cursor-pointer"
                   whileHover={{ scale: 1.05 }}
+                  onClick={() => navigate('/profile')}
                 >
-                  <div className="relative">
-                    <div className="w-32 h-32 rounded-full bg-gradient-to-br from-emerald-500 to-yellow-400 flex items-center justify-center text-5xl font-bold text-black border-2 border-yellow-400">
-                      {profile?.publicName?.[0]?.toUpperCase() || 'A'}
+                  <Glow color="emerald" intensity="medium">
+                    <div className="relative">
+                      <div className="w-32 h-32 rounded-full bg-gradient-to-br from-emerald-500 to-yellow-400 flex items-center justify-center text-5xl font-bold text-black border-2 border-yellow-400">
+                        {profile?.publicName?.[0]?.toUpperCase() || 'A'}
+                      </div>
                     </div>
-                  </div>
+                  </Glow>
                 </motion.div>
 
                 {/* Name */}
@@ -117,7 +136,7 @@ export const TotalitaPage: React.FC = () => {
                 <div className="border-t border-b border-emerald-500/30 py-6 my-6">
                   {/* Coin Balance */}
                   <div className="mb-4">
-                    <p className="text-white/50 text-xs mb-2 font-semibold">COIN CANCELLIERI</p>
+                    <p className="text-white/50 text-xs mb-2 font-semibold">CANCELLIERE</p>
                     <div className="text-4xl font-bold text-yellow-400">
                       {profile?.coinBalance || 0}
                     </div>

@@ -11,6 +11,9 @@ export default {
         black: '#000000',
         gold: '#FFD700',
         emerald: '#50C878',
+        'blue-energy': '#3A86FF',
+        'purple-network': '#8338EC',
+        'magenta-impulse': '#FF006E',
       },
       fontFamily: {
         sans: [

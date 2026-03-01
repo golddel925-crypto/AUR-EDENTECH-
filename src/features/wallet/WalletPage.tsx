@@ -135,13 +135,13 @@ export const WalletPage: React.FC = () => {
 
                   {/* Coin Cancellieri Section */}
                   <div className="border-t border-emerald-500/20 pt-6">
-                    <p className="text-white/50 text-xs font-semibold mb-3">COIN CANCELLIERI</p>
+                    <p className="text-white/50 text-xs font-semibold mb-3">CANCELLIERE</p>
                     <div className="flex items-baseline gap-2">
                       <p className="text-4xl font-bold text-yellow-400">0</p>
                       <p className="text-white/50 text-sm">disponibili</p>
                     </div>
                     <p className="text-white/40 text-xs mt-3">
-                      I tuoi Coin Cancellieri saranno visibili quando sei su Base Mainnet
+                      I tuoi CANCELLIERE saranno visibili quando sei su Base Mainnet
                     </p>
                   </div>
 

@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 
 interface GlowProps {
   children: React.ReactNode
-  color?: 'emerald' | 'gold'
+  color?: 'emerald' | 'gold' | 'blue-energy' | 'purple-network' | 'magenta-impulse'
   intensity?: 'low' | 'medium' | 'high'
   className?: string
 }
@@ -15,8 +15,11 @@ export const Glow: React.FC<GlowProps> = ({
   className = '',
 }) => {
   const colorMap = {
-    emerald: 'rgba(80, 200, 120, 0.3)',
-    gold: 'rgba(255, 215, 0, 0.3)',
+    emerald: 'var(--glow-emerald)',
+    gold: 'var(--glow-gold)',
+    'blue-energy': 'var(--glow-energy)',
+    'purple-network': 'rgba(131,56,236,0.22)',
+    'magenta-impulse': 'rgba(255,0,110,0.2)',
   }
 
   const intensityMap = {
@@ -30,9 +33,9 @@ export const Glow: React.FC<GlowProps> = ({
       className={`relative ${className}`}
       animate={{
         boxShadow: [
-          `0 0 ${intensityMap[intensity]} ${colorMap[color]}`,
-          `0 0 ${parseInt(intensityMap[intensity]) * 1.5}px ${colorMap[color]}`,
-          `0 0 ${intensityMap[intensity]} ${colorMap[color]}`,
+          `0 8px 24px -8px ${colorMap[color]}`,
+          `0 16px 48px -20px ${colorMap[color]}`,
+          `0 8px 24px -8px ${colorMap[color]}`,
         ],
       }}
       transition={{

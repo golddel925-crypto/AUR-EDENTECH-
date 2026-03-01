@@ -5,8 +5,7 @@ import { motion } from 'framer-motion'
 
 /**
  * Top Navigation Bar
- * Design: Black background, gold/emerald styling, hover glow
- * 9 nav items with emerald hover glow and gold active border
+ * Design: glassy black, emerald/gold glow, animated underline
  */
 export const TopNav: React.FC = () => {
   const navigate = useNavigate()
@@ -14,33 +13,41 @@ export const TopNav: React.FC = () => {
   const { clearSession } = useSessionStore()
 
   const handleLogout = () => {
+    // fully reset browser storage and then force a hard redirect so the app
+    // initialises from a clean state
+    sessionStorage.clear()
+    localStorage.removeItem('aur_session')
+    localStorage.removeItem('sequence_id')
     clearSession()
-    navigate('/login', { replace: true })
+    // do not use react-router navigate here per spec
+    window.location.href = '/login'
   }
 
   const menuItems = [
-    { label: 'TOTALITÀ', href: '/totalita' },
+    { label: 'HOME', href: '/' },
+    { label: 'DASHBOARD', href: '/dashboard' },
+    { label: 'TOTALITÀ', href: '/dashboard' },
     { label: 'FORUM', href: '/forum' },
-    { label: 'VIAGGIO', href: '/viaggio' },
+    { label: 'VIAGGIO', href: '/journey' },
     { label: 'PREMI', href: '/badges' },
-    { label: 'UTENTI ATTIVI', href: '/users' },
-    { label: 'COIN', href: '/profile' },
-    { label: 'WALLET', href: '/wallet' },
+    { label: 'UTENTI', href: '/users' },
+    { label: 'ATTIVITÀ', href: '/activity' },
+    { label: 'CANCELLIERE', href: '/wallet' },
     { label: 'PROFILO', href: '/profile' },
   ]
 
   const isActive = (href: string) => location.pathname === href
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-black border-b border-yellow-400">
+    <nav className="topnav fixed top-0 left-0 right-0 z-50 bg-black/40 backdrop-blur-sm h-14 border-b border-emerald/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link to="/totalita" className="flex-shrink-0">
+          <Link to="/dashboard" className="flex-shrink-0">
             <motion.div
-              className="text-2xl font-bold text-yellow-400 tracking-widest"
+              className="text-xl font-bold text-yellow-400 tracking-widest"
               whileHover={{
-                textShadow: '0 0 12px rgba(80, 200, 120, 0.8)',
+                textShadow: '0 0 8px rgba(80, 200, 120, 0.8)',
               }}
               transition={{ duration: 0.2 }}
             >
@@ -49,31 +56,29 @@ export const TopNav: React.FC = () => {
           </Link>
 
           {/* Menu - Desktop */}
-          <div className="hidden md:flex items-center space-x-1">
+          <div className="hidden md:flex items-center space-x-4">
             {menuItems.map((item) => (
               <Link key={item.href} to={item.href}>
                 <motion.div
-                  className={`px-3 py-2 text-xs font-semibold transition-all duration-200 relative pb-3 ${
-                    isActive(item.href)
-                      ? 'text-yellow-400 border-b-2 border-yellow-400'
-                      : 'text-white/70 hover:text-white'
-                  }`}
-                  whileHover={{
-                    textShadow: isActive(item.href)
-                      ? '0 0 8px rgba(255, 215, 0, 0.6)'
-                      : '0 0 12px rgba(80, 200, 120, 0.8)',
-                  }}
-                >
-                  {item.label}
-                  {!isActive(item.href) && (
-                    <motion.div
-                      className="absolute bottom-0 left-0 h-0.5 bg-emerald-500"
-                      initial={{ width: 0 }}
-                      whileHover={{ width: '100%' }}
-                      transition={{ duration: 0.2 }}
-                    />
-                  )}
-                </motion.div>
+                    className={`relative px-3 py-2 text-xs font-semibold transition-all duration-200 ${
+                      isActive(item.href)
+                        ? 'text-yellow-400'
+                        : 'text-white/70 hover:text-white'
+                    }`}
+                    whileHover={{
+                      textShadow: '0 0 10px rgba(80, 200, 120, 0.6)',
+                    }}
+                  >
+                    {item.label}
+                    {/* animated underline for active tab */}
+                    {isActive(item.href) && (
+                      <motion.div
+                        className="absolute bottom-0 left-0 h-0.5 w-full bg-gradient-to-r from-emerald-500 to-yellow-400"
+                        animate={{ opacity: [0.6, 1, 0.6] }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                      />
+                    )}
+                  </motion.div>
               </Link>
             ))}
           </div>
