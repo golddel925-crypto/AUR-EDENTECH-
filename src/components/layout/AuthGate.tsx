@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import { useNavigate } from 'react-router-dom'
 import { useSessionStore } from '../../stores/sessionStore'
 
@@ -35,12 +35,12 @@ export const AuthGate: React.FC<React.PropsWithChildren<{}>> = ({ children }) =>
 
   if (!authChecked) {
     // still determining session state
-    return null
+    return null;
   }
 
   if (!isAuthenticated) {
     // redirect effect will handle navigation; don't render children
-    return null
+    return null;
   }
 
   return <>{children}</>
