@@ -18,14 +18,12 @@ export const TopNav: React.FC = () => {
 
   const menuItems = [
     { label: 'HOME', href: '/' },
-    { label: 'DASHBOARD', href: '/dashboard' },
-    { label: 'TOTALITA', href: '/dashboard' },
     { label: 'FORUM', href: '/forum' },
     { label: 'VIAGGIO', href: '/journey' },
     { label: 'PREMI', href: '/badges' },
     { label: 'USERS', href: '/users' },
     { label: 'ACTIVITY', href: '/activity' },
-    { label: 'CHANCELLOR', href: '/wallet' },
+    { label: 'CHANCELLIERE', href: '/wallet' },
     { label: 'PROFILE', href: '/profile' },
   ];
 
